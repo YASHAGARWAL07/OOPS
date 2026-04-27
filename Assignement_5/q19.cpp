@@ -1,34 +1,85 @@
-#include<iostream>
+#include <iostream>
 using namespace std;
 
+// Base Class
 class Media {
-public:
+protected:
     string title;
-    int id;
-};
+    string id;
 
-class Book : public Media {
 public:
-    string author;
-};
+    Media(string t, string i) {
+        title = t;
+        id = i;
+    }
 
-class DVD : public Media {
-public:
-    int playtime;
-};
-
-class HardcoverBook : public Book {
-public:
-    void display() {
-        cout << title << " " << author << endl;
+    void displayMedia() {
+        cout << "Title: " << title << endl;
+        cout << "ID: " << id << endl;
     }
 };
 
-int main() {
-    HardcoverBook h;
-    h.title = "C++";
-    h.author = "Bjarne";
+// Derived Class: Book
+class Book : public Media {
+protected:
+    string author;
 
-    h.display();
+public:
+    Book(string t, string i, string a) : Media(t, i) {
+        author = a;
+    }
+
+    void displayBook() {
+        displayMedia();
+        cout << "Author: " << author << endl;
+    }
+};
+
+// Derived Class: DVD
+class DVD : public Media {
+private:
+    int playtime;
+
+public:
+    DVD(string t, string i, int p) : Media(t, i) {
+        playtime = p;
+    }
+
+    void displayDVD() {
+        displayMedia();
+        cout << "Playtime: " << playtime << " minutes" << endl;
+    }
+};
+
+// Derived Class: HardcoverBook
+class HardcoverBook : public Book {
+private:
+    float weight;
+
+public:
+    HardcoverBook(string t, string i, string a, float w)
+        : Book(t, i, a) {
+        weight = w;
+    }
+
+    void displayHardcover() {
+        cout << "Hardcover Book Details:" << endl;
+        displayBook();
+        cout << "Weight: " << weight << " kg" << endl;
+    }
+};
+
+// Main Function
+int main() {
+    HardcoverBook hb("Harry Potter", "B001", "J.K. Rowling", 0.5);
+    DVD dvd("Inception", "D001", 148);
+
+    hb.displayHardcover();
+
+    cout << endl;
+
+    cout << "DVD Details:" << endl;
+    dvd.displayDVD();
+
     return 0;
 }
